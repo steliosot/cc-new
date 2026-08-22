@@ -4,10 +4,11 @@ This repository contains the weekly lab material for Cloud Computing and Cloud C
 
 ## Current Material
 
-- [Week 0: GCP Setup and Python Environment](class-0/README.md)
-- [Week 1: Linux, Apache, and User Management](class-1/README.md)
-- [Week 2: Introduction to FastAPI](class-2/README.md)
-- [Week 3: FastAPI with SQL](class-3/README.md)
+- [Week 1: Introduction to FastAPI](class-1/README.md)
+- [Week 2: SQLite and FastAPI](class-2/README.md)
+- [Week 3: SQLAlchemy and Validation](class-3/README.md)
 - [Week 4: Validation and Authentication](class-4/README.md)
+- [Week 5: GCP, VM, Linux, and Cloud Setup](class-5/README.md)
+- [Week 6: Docker and FastAPI Containers](class-6/README.md)
 
 More weeks will be added as the course progresses.

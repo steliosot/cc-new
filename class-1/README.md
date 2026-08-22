@@ -1,26 +1,26 @@
-### Week 1: Linux, Apache, and User Management
+### Week 1: Introduction to FastAPI
 
-In Week 1, you will use your GCP virtual machine to practise Linux commands, deploy a simple Apache web page, and manage Linux users.
+In Week 1, you will build your first API using Python and FastAPI.
 
 Complete the tasks in this order:
 
-1. [Part 1: Introduction to Linux and Apache](c1-01-part-1.md)
-2. [Part 2: Linux User Management](c1-02-part-2.md)
-3. [Quiz 1](c1-03-quiz-1.md)
-4. [Homework 1: Linux Practice and Evidence](c1-04-homework-1.md)
+1. [Part 1: Create Your First FastAPI App](lab/part-1.md)
+2. [Part 2: Hello FastAPI Exercise](lab/part-2.md)
+3. [Part 3: Routes, Routers, and JSON Responses](lab/part-3.md)
+4. [Homework 1: University API Exercise](homework/homework-1.md)
+5. [Homework 2: Extend the University API](homework/homework-2.md)
 
 #### What You Need To Do
 
-- Create a new Ubuntu VM in GCP.
-- Connect to the VM using SSH.
-- Practise basic Linux commands.
-- Create folders and files from the terminal.
-- Install Apache.
-- Publish a simple HTML page.
-- Create, modify, and delete Linux users.
-- Complete the Week 1 quiz.
-- Complete and submit the Week 1 homework.
-
-> [!IMPORTANT]
->
-> Delete your VM when you finish the lab or homework unless your tutor tells you to keep it. Running cloud resources can spend your coupon credit.
+- Open a new project folder in VS Code.
+- Create a Python virtual environment.
+- Create a `requirements.txt` file.
+- Install `fastapi` and `uvicorn`.
+- Build a small FastAPI application.
+- Run the API from the VS Code terminal.
+- Open the API in your browser.
+- Complete a short FastAPI exercise from a fresh project.
+- Create routes that return text and JSON.
+- Organise routes using an `APIRouter`.
+- Build a small University API as homework.
+- Extend the API with another homework exercise.
