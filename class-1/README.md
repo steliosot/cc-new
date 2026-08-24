@@ -8,7 +8,6 @@ Complete the tasks in this order:
 2. [Part 2: Hello FastAPI Exercise](lab/part-2.md)
 3. [Part 3: Routes, Routers, and JSON Responses](lab/part-3.md)
 4. [Homework 1: University API Exercise](homework/homework-1.md)
-5. [Homework 2: Extend the University API](homework/homework-2.md)
 
 #### What You Need To Do
 
@@ -23,4 +22,3 @@ Complete the tasks in this order:
 - Create routes that return text and JSON.
 - Organise routes using an `APIRouter`.
 - Build a small University API as homework.
-- Extend the API with another homework exercise.

@@ -35,8 +35,8 @@ pico requirements.txt
 4. Add:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 Save and exit.
@@ -64,6 +64,13 @@ def home():
 def health():
     return {"status": "ok"}
 ```
+
+This is the FastAPI app that will run inside the container.
+
+- `app = FastAPI()` creates the API application.
+- `GET /` is a simple route to prove the app is running.
+- `GET /health` is a common route used to check whether an API is alive.
+- The code is still normal FastAPI code. Docker changes how we package and run it.
 
 #### Part B: Create the Dockerfile
 
@@ -93,6 +100,16 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 Save and exit.
 
+This file tells Docker how to build the container image.
+
+- `FROM python:3.12-slim` starts with a small Python environment.
+- `WORKDIR /app` creates and uses `/app` as the project folder inside the image.
+- `COPY requirements.txt .` copies only the dependency list first.
+- `RUN pip install ...` installs the Python packages inside the image.
+- `COPY . .` copies the FastAPI code into the image.
+- `EXPOSE 8000` documents that the app uses port `8000` inside the container.
+- `CMD ...` is the command that runs when the container starts.
+
 #### What Is Happening?
 
 - `FROM python:3.12-slim` starts from a small Python image.
@@ -121,6 +138,12 @@ docker build -t week6-fastapi-app:1 .
 Do not forget the final `.`.
 
 The dot means: use the current folder as the build context.
+
+The build command creates an image called `week6-fastapi-app` with version tag `1`.
+
+- An image is the packaged version of your app.
+- The image contains Python, the installed packages, and your FastAPI code.
+- Docker can create containers from this image.
 
 10. Check the image:
 
@@ -162,7 +185,13 @@ Remember to use `http`, not `https`.
 http://YOUR_VM_EXTERNAL_IP/health
 ```
 
-> [!TIP]
+The container is now running your FastAPI app.
+
+- Uvicorn runs inside the container on port `8000`.
+- Docker publishes it on VM port `80`.
+- In the browser, you use the VM external IP because the container is running on the VM.
+
+> **Quick question**
 >
 > Why do we use port `80` in the browser, but Uvicorn runs on port `8000`?
 >

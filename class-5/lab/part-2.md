@@ -75,7 +75,7 @@ A sudo user, sometimes called a sudoer, is a user who is allowed to run administ
 
 We need this because normal users should not have full administrator power all the time. With `sudo`, the user works normally most of the time, but can temporarily run important system commands when needed.
 
-> [!TIP]
+> **Quick question**
 >
 > Why should you be careful with `sudo`?
 >

@@ -2,7 +2,7 @@
 
 This is a short exercise based on [Part 1](part-1.md).
 
-Start from zero. Close your previous VSCode project first, then create a new project.
+Start from zero. Close your previous VS Code project first, then create a new project in your preferred folder.
 
 Solutions are in the [solutions](../solutions/) folder.
 
@@ -37,75 +37,18 @@ week1-exercise-api
 
 5. Create a virtual environment:
 
-> [!TIP]
->
-> Do you remember the command that creates a virtual environment called `.venv`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```bash
-> python3 -m venv .venv
-> ```
->
-> On Windows, use:
->
-> ```powershell
-> python -m venv .venv
-> ```
->
-> </details>
-
 6. Activate the virtual environment.
 
-> [!TIP]
->
-> Do you remember how to activate `.venv`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> On macOS/Linux:
->
-> ```bash
-> source .venv/bin/activate
-> ```
->
-> On Windows PowerShell:
->
-> ```powershell
-> .venv\Scripts\Activate.ps1
-> ```
->
-> </details>
-
-7. Create a file called:
-
-```text
-requirements.txt
-```
+7. Create the `requirements.txt` file.
 
 8. Add:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
-9. Install the requirements:
-
-> [!TIP]
->
-> Do you remember how to install everything listed in `requirements.txt`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```bash
-> python -m pip install -r requirements.txt
-> ```
->
-> </details>
+9. Install the requirements.
 
 #### Part C: Create the App
 
@@ -120,6 +63,26 @@ main.py
 ```text
 GET /
 GET /about
+```
+
+Use this boilerplate:
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def home():
+    # Add your return statement here.
+    pass
+
+
+@app.get("/about")
+def about():
+    # Add your return statement here.
+    pass
 ```
 
 The home endpoint should return:
@@ -142,65 +105,13 @@ Replace `your name` with your own name.
 
 #### Part D: Run and Test
 
-12. Run the app:
+12. Run the app.
 
-> [!TIP]
->
-> Do you remember the Uvicorn command that runs `main.py` and the `app` object?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```bash
-> uvicorn main:app --reload
-> ```
->
-> </details>
+13. Open the home endpoint in your browser.
 
-13. Open the home endpoint in your browser:
+14. Open the about endpoint.
 
-> [!TIP]
->
-> Do you remember the local browser URL for the home endpoint?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/
-> ```
->
-> </details>
-
-14. Open the about endpoint:
-
-> [!TIP]
->
-> If the home endpoint is `/`, what URL should you use for `/about`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/about
-> ```
->
-> </details>
-
-15. Stop the server with:
-
-> [!TIP]
->
-> Do you remember the keyboard shortcut that stops the running server?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> Ctrl + C
-> ```
->
-> </details>
+15. Stop the server.
 
 #### Checklist
 

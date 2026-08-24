@@ -1,10 +1,8 @@
 ### Week 1 Part 1: Create Your First FastAPI App
 
-This tutorial shows you how to create your first FastAPI project in VS Code.
+Welcome to the cloud! Today, we will start by building a small web application, a typical starting point for many cloud-based systems. 
 
-There are no videos for this week. Follow each step carefully and test your work in the browser.
-
-*For the moment, we will switch our attention to building an API locally on your own computer. In future classes, we will return to the cloud and deploy APIs there.*
+This tutorial will guide you through creating your first FastAPI project in VS Code, step by step, and testing it directly in your browser.
 
 #### What You Will Learn
 
@@ -13,7 +11,6 @@ There are no videos for this week. Follow each step carefully and test your work
 - How to use `requirements.txt`.
 - How to run a FastAPI app with Uvicorn.
 - How to test API endpoints in the browser.
-- What a port is.
 
 #### Part A: Create a New Project in VS Code
 
@@ -35,7 +32,9 @@ week1-hello-api
 
    **Terminal > New Terminal**
 
-5. Check that you are inside the project folder:
+5. Check that you are inside the project folder.
+
+On Mac, you can use:
 
 ```bash
 pwd
@@ -48,6 +47,8 @@ Get-Location
 ```
 
 #### Part B: Create a Virtual Environment
+
+A **venv (virtual environment)** is an isolated Python environment created for a specific project. It allows each project to have its own libraries and package versions without affecting other Python projects on your computer.
 
 6. Create a virtual environment:
 
@@ -85,14 +86,15 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 When the environment is active, you should see `(.venv)` at the start of the terminal line.
 
-> [!TIP]
+> **Quick question**
 >
-> Why are we using a virtual environment again?
+> Do we need to create a separate virtual environment for each Python project folder?
 >
 > <details>
 > <summary>Show answer</summary>
+> Yes. It is good practice to create one virtual environment for each project. This keeps each project’s dependencies and package versions isolated from other projects.
 >
-> It keeps this project's Python packages separate from other projects. This helps avoid package version conflicts.
+> *So, make sure you memorise these commands, as you will use them very often.*
 >
 > </details>
 
@@ -107,13 +109,13 @@ requirements.txt
 9. Add these lines:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 10. Save the file.
 
-`requirements.txt` is a list of packages needed by the project. It helps everyone install the same dependencies.
+> `requirements.txt` is a list of packages needed by the project. It helps everyone install the same dependencies.
 
 11. Install the packages:
 
@@ -222,17 +224,14 @@ http://127.0.0.1:8000
 
 `127.0.0.1` means your own computer. It is also called `localhost`.
 
-> [!TIP]
+> **Quick question**
 >
-> Small check: if your FastAPI app is running on port `8000`, what browser URL opens the home endpoint?
+> Can you have two FastAPI applications running on port `8000` at the same time?
 >
 > <details>
 > <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/
-> ```
->
+> **No.** Only one application can normally use a specific port at a time. To run two FastAPI applications simultaneously, use different ports, for example 8000 and 8001.
+> 
 > </details>
 
 #### Part F: Stop the Server

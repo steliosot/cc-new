@@ -35,14 +35,32 @@ week2-notes-crud
 
 4. Create and activate a virtual environment.
 
+On macOS/Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
 5. Create `requirements.txt`:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 6. Install the requirements.
+
+```bash
+python -m pip install -r requirements.txt
+```
 
 7. Create `main.py`.
 
@@ -180,28 +198,6 @@ def delete_note(note_id: int):
     return {"message": "Note deleted"}
 ```
 
-> [!TIP]
->
-> Why do we use `CREATE TABLE IF NOT EXISTS`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> It creates the table the first time the app runs, but avoids an error if the table already exists.
->
-> </details>
-
-> [!TIP]
->
-> Why do we use `?` placeholders in SQL commands such as `WHERE id = ?`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> Placeholders keep user input separate from the SQL command. This is safer and helps avoid SQL injection mistakes.
->
-> </details>
-
 #### Part C: Run and Test
 
 9. Run the app:
@@ -238,17 +234,6 @@ You should see your note.
 - `GET /notes/{note_id}`
 - `PATCH /notes/{note_id}`
 - `DELETE /notes/{note_id}`
-
-> [!TIP]
->
-> Why do we use `/docs` for `POST`, `PATCH`, and `DELETE`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> The browser address bar is mainly for GET requests. FastAPI docs lets us send request bodies and choose methods such as POST, PATCH, and DELETE.
->
-> </details>
 
 #### Checklist
 

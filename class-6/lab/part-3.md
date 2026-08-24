@@ -20,6 +20,89 @@ main.py
 Dockerfile
 ```
 
+#### Starter Files
+
+Your `requirements.txt` should contain:
+
+```text
+fastapi==0.141.1
+uvicorn==0.52.4
+```
+
+This installs the same FastAPI and Uvicorn versions used in the earlier labs.
+
+Your `main.py` can start with:
+
+```python
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+courses = {
+    "c1": {
+        "title": "Cloud Computing",
+        "level": "Year 2"
+    },
+    "c2": {
+        "title": "Databases",
+        "level": "Year 2"
+    }
+}
+
+
+@app.get("/")
+def home():
+    return {"message": "Courses API is running inside Docker"}
+
+
+@app.get("/courses")
+def get_courses():
+    return courses
+
+
+@app.get("/courses/{course_id}")
+def get_course(course_id: str):
+    course = courses.get(course_id)
+
+    if course is None:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    return course
+```
+
+This code creates a small FastAPI API.
+
+- `courses` is temporary in-memory data.
+- `GET /` checks that the API is running.
+- `GET /courses` returns all courses.
+- `GET /courses/{course_id}` returns one course from the dictionary.
+- `HTTPException` returns a clear `404` response when the course ID is unknown.
+
+Your `Dockerfile` can start with:
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+This Dockerfile packages the FastAPI app.
+
+- It starts from a Python image.
+- It installs the packages from `requirements.txt`.
+- It copies your API code into the image.
+- It starts Uvicorn when the container runs.
+
 #### API Requirements
 
 Your FastAPI app should have these routes:

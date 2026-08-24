@@ -44,17 +44,6 @@ books.db
 
 8. Exit SQLite.
 
-> [!TIP]
->
-> What is the purpose of checking the data with `SELECT * FROM books;` before writing the API?
->
-> <details>
-> <summary>Show answer</summary>
->
-> It confirms the database and table are working before you add FastAPI. This makes debugging easier.
->
-> </details>
-
 #### Part B: Create the FastAPI App
 
 9. Create and activate a virtual environment.
@@ -62,8 +51,8 @@ books.db
 10. Create `requirements.txt` with:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 11. Install the requirements.
@@ -78,17 +67,6 @@ uvicorn
 GET /
 GET /books
 ```
-
-> [!TIP]
->
-> Why should this exercise use a new project instead of reusing `week2-sqlite`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> A new project helps you practise the full setup again and avoids mixing the students example with the books exercise.
->
-> </details>
 
 #### Part C: Test
 

@@ -148,7 +148,7 @@ This means:
 - place them under the `/movies` URL prefix
 - the route `/` inside `movies.py` becomes `/movies`
 
-> [!TIP]
+> **Quick question**
 >
 > The router has `@router.get("/")` and `main.py` uses `prefix="/movies"`. What full URL should you test in the browser?
 >
@@ -258,7 +258,7 @@ Then this line reads the matching movie from the dictionary:
 return movies[movie_id]
 ```
 
-> [!TIP]
+> **Quick question**
 >
 > Small research task: search the web for FastAPI path parameters. What does the `{movie_id}` part of the route do?
 >

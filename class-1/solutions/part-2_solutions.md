@@ -5,8 +5,8 @@ Use these solutions only after you have tried the exercise.
 #### `requirements.txt`
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 #### `main.py`

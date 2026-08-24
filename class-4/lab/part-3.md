@@ -25,12 +25,24 @@ import models
 from database import get_db
 ```
 
+These imports add the tools needed to read and verify bearer tokens.
+
+- `HTTPBearer` reads the `Authorization: Bearer ...` header.
+- `JWTError` lets us catch invalid token problems.
+- `Session` and `get_db` let us find the user in the database.
+- `models` gives access to the `User` table.
+
 3. Add this under the constants:
 
 ```python
 # HTTPBearer tells FastAPI to expect an Authorization: Bearer <token> header.
 bearer_scheme = HTTPBearer()
 ```
+
+This creates the security dependency.
+
+- If a route uses this dependency, FastAPI expects a bearer token.
+- If no token is sent, FastAPI rejects the request before the route runs.
 
 4. Add this function at the bottom:
 
@@ -64,6 +76,15 @@ def get_current_user(
     return user
 ```
 
+This function finds the logged-in user from the token.
+
+- It reads the token from the request header.
+- It decodes the JWT using the same `SECRET_KEY`.
+- It reads the email from the token subject, `sub`.
+- It queries the database for that user.
+- If anything is wrong, it returns a `401` error.
+- If everything is valid, it returns the current user object.
+
 #### Part B: Create a Protected Router
 
 5. Create `routers/profile.py`:
@@ -87,6 +108,13 @@ def get_profile(current_user: models.User = Depends(get_current_user)):
     }
 ```
 
+This router contains a protected route.
+
+- `Depends(get_current_user)` means the route needs a valid token.
+- If the token is missing or invalid, the function does not run.
+- If the token is valid, `current_user` contains the logged-in user.
+- The route returns profile information for that user.
+
 6. Open `main.py`.
 
 7. Update the router import:
@@ -95,11 +123,18 @@ def get_profile(current_user: models.User = Depends(get_current_user)):
 from routers import auth, profile
 ```
 
+This imports both routers so `main.py` can connect them to the app.
+
 8. Add:
 
 ```python
 app.include_router(profile.router, prefix="/profile")
 ```
+
+This connects the profile routes under `/profile`.
+
+- The route `@router.get("/me")` becomes `/profile/me`.
+- Because the route depends on `get_current_user`, it is protected.
 
 #### Part C: Test Without a Token
 
@@ -145,7 +180,7 @@ http://127.0.0.1:8000/docs
 
 You should see the logged-in user's profile.
 
-> [!TIP]
+> **Quick question**
 >
 > What does a bearer token prove to the API?
 >

@@ -24,23 +24,35 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 # Data accepted when creating a course.
+# This schema describes the request body for POST /courses.
 class CourseCreate(BaseModel):
+    # Field adds validation rules before the route function runs.
     code: str = Field(min_length=2, max_length=20)
     title: str = Field(min_length=3, max_length=100)
     lecturer: str = Field(min_length=2, max_length=80)
 
 
 # Data returned by the API.
+# This schema describes the response shape sent back to the client.
 class CourseResponse(BaseModel):
     id: int
     code: str
     title: str
     lecturer: str
 
+    # This allows Pydantic to read values from SQLAlchemy objects.
     model_config = ConfigDict(from_attributes=True)
 ```
 
-> [!TIP]
+This file defines the Pydantic schemas used by the API.
+
+- `CourseCreate` describes the data the client sends when creating a course.
+- `Field(...)` adds validation rules, such as minimum and maximum length.
+- `CourseResponse` describes the data the API sends back.
+- `CourseResponse` includes `id` because the database creates it.
+- `ConfigDict(from_attributes=True)` lets Pydantic read data from SQLAlchemy model objects.
+
+> **Quick question**
 >
 > Why does `CourseResponse` include `id`, but `CourseCreate` does not?
 >
@@ -66,6 +78,7 @@ import schemas
 ```python
 @app.get("/courses", response_model=list[schemas.CourseResponse])
 def get_courses(db: Session = Depends(get_db)):
+    # response_model tells FastAPI to return a list of CourseResponse objects.
     # Read all courses from the database.
     courses = db.query(models.Course).all()
     return courses
@@ -85,6 +98,7 @@ def get_course(course_id: int, db: Session = Depends(get_db)):
 @app.post("/courses", response_model=schemas.CourseResponse)
 def create_course(course_data: schemas.CourseCreate, db: Session = Depends(get_db)):
     # course_data has already been checked by Pydantic.
+    # We can use dot notation because course_data is a CourseCreate object.
     course = models.Course(
         code=course_data.code,
         title=course_data.title,
@@ -101,6 +115,14 @@ def create_course(course_data: schemas.CourseCreate, db: Session = Depends(get_d
         db.rollback()
         raise HTTPException(status_code=400, detail="Course code already exists")
 ```
+
+This code updates the API to use Pydantic schemas.
+
+- `response_model=...` controls the shape of the response.
+- `course_data: schemas.CourseCreate` tells FastAPI to validate the request body.
+- If the request body is invalid, FastAPI returns an error before the function runs.
+- After validation, `course_data.code`, `course_data.title`, and `course_data.lecturer` are safe to use.
+- The database code is still handled by SQLAlchemy.
 
 #### Part C: Test Valid Data
 

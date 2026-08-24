@@ -69,17 +69,6 @@ You should see a JSON response. If there are no notes yet, you may see:
 []
 ```
 
-> [!TIP]
->
-> What does the `GET /notes` request do?
->
-> <details>
-> <summary>Show answer</summary>
->
-> It asks the API to read and return all notes from the SQLite database.
->
-> </details>
-
 #### Part D: Send a POST Request
 
 11. Create a new request.
@@ -148,17 +137,6 @@ If your note has a different ID, replace `1` with your note ID.
 25. Click **Send**.
 
 You should see the updated note.
-
-> [!TIP]
->
-> Why does the `PATCH` body only include `title`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> `PATCH` is used for partial updates. We can update only one field and leave the other fields unchanged.
->
-> </details>
 
 #### Part F: Send a DELETE Request
 

@@ -1,16 +1,16 @@
 ### Week 2 Part 1: Create a Local SQLite Database
 
+Web applications often need to store and retrieve data, such as users, products or orders. SQL allows our application to communicate with a database so that this data can be saved, searched, updated, and deleted using commands.
+
 In this part, you will create a small SQLite database locally and practise basic SQL commands.
 
 SQLite stores the database in a normal file. This is useful for learning because we do not need to install or manage a separate database server.
 
 #### What You Will Learn
 
-- What a SQLite database file is.
 - How to run SQLite from the terminal.
 - How to write SQL commands in a `.sql` file.
-- How to create a table.
-- How to insert data.
+- How to create a table and insert data.
 - How to read data with `SELECT`.
 
 #### Part A: Create a Project Folder and Check SQLite
@@ -49,7 +49,7 @@ We will still run the smaller check commands, such as `SELECT`, `.tables`, and `
 setup_students.sql
 ```
 
-6. Add this SQL:
+6. Examine and add this SQL code:
 
 ```sql
 CREATE TABLE students (
@@ -69,6 +69,10 @@ INSERT INTO students (name, course, year)
 VALUES ('Grace Hopper', 'Software Engineering', 1);
 ```
 
+* This SQL code first creates a table called `students` with four columns: a unique `id`, the student's `name`, their `course`, and their `year` of study. `PRIMARY KEY AUTOINCREMENT` automatically gives each student a unique ID, while `NOT NULL` means that a value must be provided.
+
+* The three `INSERT` statements then add three students to the table: Ada Lovelace, Alan Turing, and Grace Hopper.
+
 7. Save the file.
 
 #### Part C: Create the Database from the SQL File
@@ -85,7 +89,7 @@ This command means:
 - read the SQL commands from `setup_students.sql`
 - run those commands inside SQLite
 
-> [!TIP]
+> **Quick question**
 >
 > What does the `< setup_students.sql` part do?
 >
@@ -96,17 +100,7 @@ This command means:
 >
 > </details>
 
-9. Check that the database file exists:
-
-```bash
-ls
-```
-
-You should see:
-
-```text
-university.db
-```
+9. Check that the database file exists in the explorer.
 
 #### Part D: Open SQLite and Check the Data
 
@@ -147,7 +141,7 @@ students
 .mode column
 ```
 
-> [!TIP]
+> **Quick question**
 >
 > What do `.headers on` and `.mode column` change?
 >

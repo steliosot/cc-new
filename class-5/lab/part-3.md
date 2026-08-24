@@ -141,7 +141,7 @@ rm -r cloud-practice-backup
 >
 > Be careful with `rm`. It deletes files and folders. Always check the path before running a delete command.
 
-> [!TIP]
+> **Quick question**
 >
 > Small research task: search the web for how to list only files ending in `.txt` in Linux. What command could you run inside `cloud-practice`?
 >

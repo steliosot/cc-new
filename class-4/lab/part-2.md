@@ -40,6 +40,14 @@ def get_db():
         db.close()
 ```
 
+This file prepares the database connection for the authentication API.
+
+- `auth.db` is the SQLite file that will store users.
+- `engine` connects SQLAlchemy to the SQLite database.
+- `SessionLocal` creates sessions for database work.
+- `Base` is used by the `User` model.
+- `get_db()` gives each API request its own database session and closes it afterwards.
+
 2. Create `models.py`:
 
 ```python
@@ -61,6 +69,13 @@ class User(Base):
     # Store the hashed password, never the original password.
     hashed_password = Column(String, nullable=False)
 ```
+
+This model creates the `users` table.
+
+- `id` uniquely identifies each user.
+- `username` stores the display name.
+- `email` is unique because users log in with their email address.
+- `hashed_password` stores the password hash, not the original password.
 
 #### Part B: Create Auth Schemas
 
@@ -98,6 +113,14 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str
 ```
+
+These schemas describe the data that enters and leaves the auth API.
+
+- `UserCreate` is used for registration.
+- `UserLogin` is used for login.
+- `UserResponse` is returned after registration and does not include the password.
+- `TokenResponse` is returned after login and contains the JWT access token.
+- `ConfigDict(from_attributes=True)` lets Pydantic read data from SQLAlchemy user objects.
 
 #### Part C: Create Security Helpers
 
@@ -139,6 +162,13 @@ def create_access_token(data: dict):
     # Sign and return the JWT.
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 ```
+
+This file handles passwords and tokens.
+
+- `hash_password()` turns a plain password into a hash before storing it.
+- `verify_password()` checks a login password against the stored hash.
+- `create_access_token()` creates a signed JWT.
+- The token stores a small piece of user information and an expiry time.
 
 > [!WARNING]
 >
@@ -212,6 +242,14 @@ def login(user_login: schemas.UserLogin, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 ```
 
+This router contains the registration and login endpoints.
+
+- `POST /auth/register` checks for duplicate emails, hashes the password, and stores the user.
+- `response_model=schemas.UserResponse` prevents the hashed password from being returned.
+- `POST /auth/login` finds the user by email.
+- `verify_password(...)` checks the submitted password.
+- If the login is correct, the API returns a bearer token.
+
 #### Part E: Connect the App
 
 8. Replace `main.py` with:
@@ -236,6 +274,12 @@ app.include_router(auth.router, prefix="/auth")
 def home():
     return {"message": "Week 4 auth API is running"}
 ```
+
+This file starts the FastAPI app and connects the routers.
+
+- `create_all(...)` creates the `users` table if needed.
+- `app.include_router(auth.router, prefix="/auth")` places the auth routes under `/auth`.
+- The home route is a simple check that the API is running.
 
 9. Run:
 
@@ -272,7 +316,7 @@ You should receive:
 }
 ```
 
-> [!TIP]
+> **Quick question**
 >
 > Why do we store `hashed_password` instead of the original password?
 >

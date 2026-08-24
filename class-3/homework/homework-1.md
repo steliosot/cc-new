@@ -14,6 +14,24 @@ Your project folder should be called:
 week3-books-api
 ```
 
+Open this folder in VS Code and use the VS Code terminal.
+
+Create and activate a virtual environment.
+
+On macOS/Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
 #### Requirements
 
 Create these files:
@@ -29,9 +47,15 @@ main.py
 Your `requirements.txt` should contain:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 sqlalchemy
+```
+
+Install the requirements:
+
+```bash
+python -m pip install -r requirements.txt
 ```
 
 #### Database
@@ -67,15 +91,6 @@ Use validation rules:
 - `author` must have at least 2 characters.
 - `year` must be greater than or equal to 1900.
 
-<details>
-<summary>Which Pydantic helper can you use for these rules?</summary>
-
-```python
-Field(...)
-```
-
-</details>
-
 #### API Routes
 
 Create these routes:
@@ -93,18 +108,125 @@ The home route should return:
 {"message":"Books API is running"}
 ```
 
+#### Starter Boilerplate
+
+Use this as the starting point for `database.py`:
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+DATABASE_URL = "sqlite:///./books.db"
+
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+```
+
+Use this as the starting point for `models.py`:
+
+```python
+from sqlalchemy import Column, Integer, String
+
+from database import Base
+
+
+class Book(Base):
+    __tablename__ = "books"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    year = Column(Integer, nullable=False)
+```
+
+Use this as the starting point for `schemas.py`:
+
+```python
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class BookCreate(BaseModel):
+    title: str = Field(min_length=2)
+    author: str = Field(min_length=2)
+    year: int = Field(ge=1900)
+
+
+class BookResponse(BaseModel):
+    id: int
+    title: str
+    author: str
+    year: int
+
+    model_config = ConfigDict(from_attributes=True)
+```
+
+Use this as the starting point for `main.py`:
+
+```python
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
+
+import models
+import schemas
+from database import engine, get_db
+
+models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+
+@app.get("/")
+def home():
+    return {"message": "Books API is running"}
+
+
+@app.get("/books", response_model=list[schemas.BookResponse])
+def get_books(db: Session = Depends(get_db)):
+    return db.query(models.Book).all()
+
+
+@app.get("/books/{book_id}", response_model=schemas.BookResponse)
+def get_book(book_id: int, db: Session = Depends(get_db)):
+    book = db.query(models.Book).filter(models.Book.id == book_id).first()
+
+    if book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    return book
+
+
+@app.post("/books", response_model=schemas.BookResponse)
+def create_book(book_data: schemas.BookCreate, db: Session = Depends(get_db)):
+    book = models.Book(
+        title=book_data.title,
+        author=book_data.author,
+        year=book_data.year
+    )
+
+    db.add(book)
+    db.commit()
+    db.refresh(book)
+    return book
+```
+
 #### Test
 
 Run the app with Uvicorn.
 
-<details>
-<summary>Do you remember the command?</summary>
-
 ```bash
 uvicorn main:app --reload
 ```
-
-</details>
 
 First open:
 

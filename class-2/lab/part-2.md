@@ -48,8 +48,8 @@ requirements.txt
 5. Add:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 6. Install the requirements:
@@ -99,8 +99,13 @@ def get_students():
 
     connection.close()
 
-    # Convert SQLite rows into dictionaries so FastAPI can return JSON.
-    return [dict(row) for row in rows]
+    # Convert each row into a dictionary
+    students = []
+
+    for row in rows:
+        students.append(dict(row))
+
+    return students
 ```
 
 #### What Is Happening?
@@ -110,7 +115,7 @@ def get_students():
 - `fetchall()` reads all matching rows.
 - `dict(row)` converts each row into JSON-friendly data.
 
-> [!TIP]
+> **Quick question**
 >
 > Why do we use `connection.row_factory = sqlite3.Row`?
 >
@@ -149,7 +154,7 @@ http://127.0.0.1:8000/students
 
 You should see the students you inserted in Part 1.
 
-> [!TIP]
+> **Quick question**
 >
 > Where is the API getting the student data from?
 >
@@ -166,4 +171,4 @@ You should see the students you inserted in Part 1.
 Ctrl + C
 ```
 
-Part 2 is complete. Continue to [Part 3](part-3.md).
+Part 2 is complete. Continue to [Part 3](part-3.md)

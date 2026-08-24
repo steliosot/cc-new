@@ -72,7 +72,7 @@ If GCP asks you to enable the Compute Engine API, click **Enable** and wait unti
 
 ![Enable Compute Engine API](../assets/22.png)
 
-> [!TIP]
+> **Quick question**
 >
 > Why do we need Compute Engine for this lab?
 >

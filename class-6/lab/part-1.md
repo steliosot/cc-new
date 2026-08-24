@@ -65,7 +65,7 @@ sudo systemctl status docker
 
 If the status screen opens, press `q` to return to the terminal.
 
-> [!TIP]
+> **Quick question**
 >
 > What does `sudo apt update` do before installing Docker?
 >

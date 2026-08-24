@@ -96,15 +96,6 @@ root
 
 14. List only `.txt` files inside the folder.
 
-<details>
-<summary>Which command can list `.txt` files in the current folder?</summary>
-
-```bash
-ls *.txt
-```
-
-</details>
-
 #### Task D: Cleanup
 
 15. Delete the exercise VM.

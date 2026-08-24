@@ -38,50 +38,32 @@ week1-university-api
 
 4. Create and activate a virtual environment.
 
-> [!TIP]
->
-> Do you remember how to create and activate `.venv`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> On macOS/Linux:
->
-> ```bash
-> python3 -m venv .venv
-> source .venv/bin/activate
-> ```
->
-> On Windows PowerShell:
->
-> ```powershell
-> python -m venv .venv
-> .venv\Scripts\Activate.ps1
-> ```
->
-> </details>
+On macOS/Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
 
 5. Create a `requirements.txt` file with:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 ```
 
 6. Install the requirements:
 
-> [!TIP]
->
-> Do you remember how to install the packages listed in `requirements.txt`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```bash
-> python -m pip install -r requirements.txt
-> ```
->
-> </details>
+```bash
+python -m pip install -r requirements.txt
+```
 
 #### Part B: Create the Files
 
@@ -96,16 +78,77 @@ week1-university-api/
     students.py
 ```
 
-> [!TIP]
->
-> Why do we create `routers/students.py` instead of writing every endpoint in `main.py`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> It keeps the API organised. Student-related routes live in one file, and the main app only connects the router.
->
-> </details>
+#### Starter Boilerplate
+
+Use this as the starting point for `main.py`:
+
+```python
+from fastapi import FastAPI
+
+from routers import students
+
+app = FastAPI()
+
+app.include_router(students.router, prefix="/students")
+
+
+@app.get("/")
+def home():
+    return {
+        "name": "University API",
+        "version": "1.0.0",
+        "description": "A simple API to fetch university student data.",
+        "endpoints": {
+            "root": "GET /",
+            "all_students": "GET /students",
+            "student_by_id": "GET /students/s1"
+        }
+    }
+```
+
+Use this as the starting point for `routers/students.py`:
+
+```python
+from fastapi import APIRouter, HTTPException
+
+router = APIRouter()
+
+students = {
+    "s1": {
+        "name": "John Smith",
+        "student_id": "S12345",
+        "major": "Computer Science",
+        "year": 2
+    },
+    "s2": {
+        "name": "Maria Garcia",
+        "student_id": "S54321",
+        "major": "Mathematics",
+        "year": 3
+    },
+    "s3": {
+        "name": "Ali Khan",
+        "student_id": "S77777",
+        "major": "Data Science",
+        "year": 1
+    }
+}
+
+
+@router.get("/")
+def get_students():
+    return students
+
+
+@router.get("/{student_id}")
+def get_student(student_id: str):
+    student = students.get(student_id)
+
+    if student is None:
+        raise HTTPException(status_code=404, detail="Student not found")
+
+    return student
+```
 
 #### Part C: Root Endpoint
 
@@ -156,72 +199,18 @@ students = {
 
 Run the server:
 
-> [!TIP]
->
-> Do you remember the command that runs the FastAPI app?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```bash
-> uvicorn main:app --reload
-> ```
->
-> </details>
+```bash
+uvicorn main:app --reload
+```
 
 Open these URLs in your browser:
 
-> [!TIP]
->
-> Do you remember the local URL for the root endpoint?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/
-> ```
->
-> </details>
-
-> [!TIP]
->
-> What URL should show all students?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/students
-> ```
->
-> </details>
-
-> [!TIP]
->
-> What URL should show student `s1`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/students/s1
-> ```
->
-> </details>
-
-> [!TIP]
->
-> What URL should test the `404` error for a missing student?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/students/s10
-> ```
->
-> </details>
+```text
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/students
+http://127.0.0.1:8000/students/s1
+http://127.0.0.1:8000/students/s10
+```
 
 The final URL should return a `404` error with:
 
@@ -229,18 +218,11 @@ The final URL should return a `404` error with:
 {"detail":"Student not found"}
 ```
 
-> [!TIP]
->
-> Your students router uses `@router.get("/{student_id}")`, and `main.py` should use `prefix="/students"`. What URL returns student `s2`?
->
-> <details>
-> <summary>Show answer</summary>
->
-> ```text
-> http://127.0.0.1:8000/students/s2
-> ```
->
-> </details>
+Also check student `s2`:
+
+```text
+http://127.0.0.1:8000/students/s2
+```
 
 #### Hints
 
@@ -292,4 +274,4 @@ Before you finish, make sure:
 - `GET /students/s10` returns a `404` JSON error.
 - You can explain what `/{student_id}` does.
 
-Homework 1 is complete. Continue to [Homework 2](homework-2.md).
+Homework 1 is complete. Week 1 is complete.

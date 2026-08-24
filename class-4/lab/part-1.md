@@ -1,14 +1,14 @@
-### Week 4 Part 1: Validation with Pydantic
+### Week 4 Part 1: Validation Recap for User Registration
 
-This tutorial introduces validation in FastAPI.
+In Week 3, you used Pydantic validation for courses.
 
-Validation means checking that incoming data has the right shape before the API uses it.
+In this short recap, you will use the same idea for user registration. This time the data is more sensitive because it contains an email address and a password.
 
 #### What You Will Learn
 
-- How Pydantic validates request bodies.
-- How to use field constraints.
-- How FastAPI returns validation errors.
+- How to reuse Pydantic validation for user input.
+- How to validate email addresses.
+- How to avoid returning passwords in API responses.
 - How to test invalid data in `/docs`.
 
 #### Part A: Create the Project
@@ -26,8 +26,8 @@ week4-auth-api
 4. Create `requirements.txt`:
 
 ```text
-fastapi
-uvicorn
+fastapi==0.141.1
+uvicorn==0.52.4
 sqlalchemy
 passlib[bcrypt]
 bcrypt<5
@@ -54,12 +54,14 @@ app = FastAPI()
 
 
 # This schema describes the data accepted by /register-preview.
-# FastAPI checks the rules before the function runs.
+# A schema is a Python class that says which fields the request body must contain.
 class UserRegister(BaseModel):
-    # username must be between 3 and 50 characters.
+    # Field adds validation rules.
+    # Here, username must be between 3 and 50 characters.
     username: str = Field(min_length=3, max_length=50)
 
     # EmailStr checks that the value looks like an email address.
+    # This needs the email-validator package.
     email: EmailStr
 
     # password must be at least 6 characters.
@@ -69,6 +71,7 @@ class UserRegister(BaseModel):
 @app.post("/register-preview")
 def register_preview(user: UserRegister):
     # If we reach this point, validation has passed.
+    # FastAPI has already converted the JSON body into a UserRegister object.
     # Do not return the password in the response.
     return {
         "username": user.username,
@@ -76,6 +79,14 @@ def register_preview(user: UserRegister):
         "message": "Validation passed"
     }
 ```
+
+This code checks registration data before we save anything.
+
+- `UserRegister` is the schema for the request body.
+- `Field(...)` checks the length of `username` and `password`.
+- `EmailStr` checks that the email looks valid.
+- `register_preview()` returns only safe information.
+- The password is accepted for validation, but it is not returned in the response.
 
 8. Add `email-validator` to `requirements.txt`:
 
@@ -123,7 +134,7 @@ http://127.0.0.1:8000/docs
 
 FastAPI should return validation errors.
 
-> [!TIP]
+> **Quick question**
 >
 > Why is it useful for FastAPI to reject bad data before it reaches our database code?
 >
