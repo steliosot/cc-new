@@ -109,8 +109,8 @@ requirements.txt
 9. Add these lines:
 
 ```text
-fastapi==0.141.1
-uvicorn==0.52.4
+fastapi==0.141.1;
+uvicorn==0.52.4;
 ```
 
 10. Save the file.

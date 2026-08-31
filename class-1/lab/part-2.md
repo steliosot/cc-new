@@ -44,8 +44,8 @@ week1-exercise-api
 8. Add:
 
 ```text
-fastapi==0.141.1
-uvicorn==0.52.4
+fastapi==0.141.1;
+uvicorn==0.52.4;
 ```
 
 9. Install the requirements.

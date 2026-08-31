@@ -90,11 +90,11 @@ week1-hello-api/
 from fastapi import APIRouter
 
 # This router will hold all movie-related endpoints.
-router = APIRouter()
+routers = APIRouter()
 
 
 # This route will become /movies after we connect it in main.py.
-@router.get("/")
+@routers.get("/")
 def get_movies():
     return {"message": "Hello world from the movies router!"}
 ```
@@ -208,13 +208,13 @@ movies = {
 }
 
 
-@router.get("/")
+@routers.get("/")
 def get_movies():
     # Return all movie records.
     return movies
 
 
-@router.get("/{movie_id}")
+@routers.get("/{movie_id}")
 def get_movie(movie_id: str):
     # movie_id comes from the URL, for example /movies/hobbit.
     # We use it as a key in the movies dictionary.
@@ -290,7 +290,7 @@ from fastapi import APIRouter, HTTPException
 25. Replace the `get_movie` function with this version:
 
 ```python
-@router.get("/{movie_id}")
+@routers.get("/{movie_id}")
 def get_movie(movie_id: str):
     # .get() returns None instead of crashing if the key does not exist.
     movie = movies.get(movie_id)
