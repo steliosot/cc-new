@@ -48,8 +48,8 @@ requirements.txt
 5. Add:
 
 ```text
-fastapi==0.141.1
-uvicorn==0.52.4
+fastapi==0.141.1;
+uvicorn==0.52.4;
 ```
 
 6. Install the requirements:
